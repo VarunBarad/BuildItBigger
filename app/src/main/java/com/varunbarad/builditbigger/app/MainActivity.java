@@ -1,4 +1,4 @@
-package com.udacity.gradle.builditbigger;
+package com.varunbarad.builditbigger.app;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
-import com.udacity.gradle.builditbigger.databinding.ActivityMainBinding;
+import com.varunbarad.builditbigger.app.databinding.ActivityMainBinding;
 import com.varunbarad.builditbigger.javajokeslib.Joker;
 import com.varunbarad.builditbigger.javajokeslib.model.Joke;
 import com.varunbarad.builditbigger.jokesdisplaylibrary.DisplayJokeActivity;

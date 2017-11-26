@@ -8,7 +8,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.udacity.gradle.builditbigger"
+        applicationId 'com.varunbarad.builditbigger.app'
         minSdkVersion 16
         targetSdkVersion 26
         versionCode 1
