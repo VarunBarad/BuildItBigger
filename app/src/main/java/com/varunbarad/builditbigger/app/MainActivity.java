@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
 import com.varunbarad.builditbigger.app.databinding.ActivityMainBinding;
 import com.varunbarad.builditbigger.javajokeslib.Joker;
 import com.varunbarad.builditbigger.javajokeslib.model.Joke;
@@ -27,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     if (!this.joker.hasMoreJokes()) {
       this.dataBinding.buttonTellJoke.setVisibility(View.GONE);
     }
+  
+    this.loadAd();
   }
   
   public void tellJoke(View view) {
@@ -40,5 +44,15 @@ public class MainActivity extends AppCompatActivity {
     } else {
       Toast.makeText(this, "Sorry, no jokes available", Toast.LENGTH_SHORT).show();
     }
+  }
+  
+  private void loadAd() {
+    MobileAds.initialize(this, BuildConfig.AdMobKey);
+    
+    AdRequest adRequest =
+        new AdRequest.Builder()
+            .build();
+    
+    this.dataBinding.adViewMainActivity.loadAd(adRequest);
   }
 }
