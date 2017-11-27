@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.varunbarad.builditbigger.app.databinding.ActivityMainBinding;
 import com.varunbarad.builditbigger.javajokeslib.Joker;
