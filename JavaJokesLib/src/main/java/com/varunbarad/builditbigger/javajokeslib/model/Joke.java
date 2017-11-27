@@ -26,6 +26,12 @@ public final class Joke {
   private String punchline;
   
   /**
+   * This is a no-arg constructor meant for use by Gson and not intended to be used directly.
+   */
+  public Joke() {
+  }
+  
+  /**
    * Get a new Joke instance having the specified properties.
    *
    * @param id        The id for the joke
