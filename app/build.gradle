@@ -23,8 +23,9 @@ android {
     }
 
     buildTypes.each {
-        it.buildConfigField 'String', "AdMobKey", AdMobKey
-        it.buildConfigField 'String', "AdMobUnitId", AdMobUnitId
+        it.buildConfigField 'String', "AdMobKey", AdMobTestKey
+        it.buildConfigField 'String', "AdMobBannerUnitId", AdMobTestBannerUnitId
+        it.buildConfigField 'String', "AdMobInterstitialUnitId", AdMobTestInterstitialUnitId
     }
 
     flavorDimensions 'application'

@@ -23,20 +23,50 @@ public class MainActivity extends AppCompatActivity {
   
   private ActivityMainBinding dataBinding;
   
+  private InterstitialAdHelper interstitialAdHelper;
+  
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     this.dataBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
   
     AdHelper.loadBannerAdForMainActivity(this, this.dataBinding);
+    this.interstitialAdHelper = new InterstitialAdHelper(this, new CustomAdListener() {
+      @Override
+      public void onAdLoaded() {
+      
+      }
+    
+      @Override
+      public void onAdFailedToLoad(int errorCode) {
+      
+      }
+    
+      @Override
+      public void onAdOpened() {
+      
+      }
+    
+      @Override
+      public void onAdLeftApplication() {
+      
+      }
+    
+      @Override
+      public void onAdClosed() {
+        MainActivity.this.fetchJoke();
+      }
+    });
   
     this.getIdlingResource();
   }
   
-  public void tellJoke(View view) {
-    if (this.idlingResource != null) {
-      this.idlingResource.increment();
-    }
+  public void showInterstitialAd() {
+    this.interstitialAdHelper.showAd();
+  }
+  
+  public void fetchJoke() {
+    this.interstitialAdHelper.reset();
     
     FetchJokeTask fetchJokeTask = new FetchJokeTask(new JokeListener() {
       @Override
@@ -44,9 +74,21 @@ public class MainActivity extends AppCompatActivity {
         MainActivity.this.launchDetailsActivity(joke);
       }
     });
-  
+    
     fetchJokeTask.execute();
     this.showProgressDialog();
+  }
+  
+  public void tellJoke(View view) {
+    if (this.idlingResource != null) {
+      this.idlingResource.increment();
+    }
+  
+    if (this.interstitialAdHelper.isAdLoaded()) {
+      this.showInterstitialAd();
+    } else {
+      this.fetchJoke();
+    }
   }
   
   private void showProgressDialog() {
