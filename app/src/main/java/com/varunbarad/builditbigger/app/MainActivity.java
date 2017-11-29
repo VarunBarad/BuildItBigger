@@ -3,6 +3,10 @@ package com.varunbarad.builditbigger.app;
 import android.app.ProgressDialog;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
+import android.support.test.espresso.idling.CountingIdlingResource;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
@@ -12,6 +16,9 @@ import com.varunbarad.builditbigger.jokesdisplaylibrary.DisplayJokeActivity;
 
 
 public class MainActivity extends AppCompatActivity {
+  @Nullable
+  private CountingIdlingResource idlingResource;
+  
   private ProgressDialog progressDialog;
   
   private ActivityMainBinding dataBinding;
@@ -22,14 +29,19 @@ public class MainActivity extends AppCompatActivity {
     this.dataBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
   
     AdHelper.loadBannerAdForMainActivity(this, this.dataBinding);
+  
+    this.getIdlingResource();
   }
   
   public void tellJoke(View view) {
+    if (this.idlingResource != null) {
+      this.idlingResource.increment();
+    }
+    
     FetchJokeTask fetchJokeTask = new FetchJokeTask(new JokeListener() {
       @Override
       public void jokeReceived(Joke joke) {
-        MainActivity.this.dismissProgressDialog();
-        DisplayJokeActivity.start(MainActivity.this, joke);
+        MainActivity.this.launchDetailsActivity(joke);
       }
     });
   
@@ -53,5 +65,23 @@ public class MainActivity extends AppCompatActivity {
       this.progressDialog.dismiss();
       this.progressDialog = null;
     }
+  }
+  
+  private void launchDetailsActivity(Joke joke) {
+    this.dismissProgressDialog();
+    DisplayJokeActivity.start(this, joke);
+    
+    if (this.idlingResource != null) {
+      this.idlingResource.decrement();
+    }
+  }
+  
+  @VisibleForTesting
+  @Nullable
+  public IdlingResource getIdlingResource() {
+    if (this.idlingResource == null) {
+      this.idlingResource = new CountingIdlingResource("Network-Idling-Resource");
+    }
+    return this.idlingResource;
   }
 }
