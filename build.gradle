@@ -19,3 +19,23 @@ allprojects {
         google()
     }
 }
+
+task startGCEForFunctionalTests(dependsOn: ':backend:appengineRun') {
+    evaluationDependsOn(":backend")
+
+    project(":backend") {
+        appengine {
+            daemon true
+        }
+    }
+    doLast {
+        println("Test server on...")
+    }
+}
+
+task runAppEngineAndExecuteFunctionalTests {
+    dependsOn  ":app:connectedAndroidTest"
+    dependsOn "startGCEForFunctionalTests"
+    mustRunAfter "startGCEForFunctionalTests"
+    finalizedBy ":backend:appengineStop"
+}
